@@ -64,7 +64,7 @@ export default function LoginPage() {
 			tagline="Everything your kitchen needs, in one place."
 			highlights={['Track live orders in real time', 'Manage payouts and earnings clearly', 'Grow with badges and visibility boosts']}
 		>
-			<form className="auth-form bg-red-600" onSubmit={handleSubmit} noValidate>
+			<form className="auth-form" onSubmit={handleSubmit} noValidate>
 				<Field label="Email" htmlFor="email">
 					<Input id="email" type="email" autoComplete="email" placeholder="you@business.com" value={email} onChange={event => setEmail(event.target.value)} required />
 				</Field>
