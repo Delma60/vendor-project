@@ -2,6 +2,9 @@
 
 import type { User, UserRole } from '@foodconnect/shared-types';
 import { useEffect, useState } from 'react';
+import { auth, db } from '@foodconnect/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 export interface ApiClient { request<T>(path: string, init?: RequestInit): Promise<T>; }
 export const apiClient: ApiClient = {
@@ -24,10 +27,22 @@ export function useApiQuery<T>(path: string | null): { data: T | null; error: Er
   return state;
 }
 
-export function getCurrentUser(): User | null {
-  if (typeof window === 'undefined') return null;
-  const value = window.localStorage.getItem('foodconnect:user');
-  return value ? JSON.parse(value) as User : null;
+async function fetchUserProfile(uid: string): Promise<User | null> {
+  const snapshot = await getDoc(doc(db, 'users', uid));
+  return snapshot.exists() ? snapshot.data() as User : null;
+}
+
+export function useCurrentUser(): { user: User | null; loading: boolean } {
+  const [state, setState] = useState<{ user: User | null; loading: boolean }>({ user: null, loading: true });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async firebaseUser => {
+      if (!firebaseUser) { setState({ user: null, loading: false }); return; }
+      const profile = await fetchUserProfile(firebaseUser.uid);
+      setState({ user: profile, loading: false });
+    });
+    return unsubscribe;
+  }, []);
+  return state;
 }
 
 export function hasRole(user: User | null, allowedRoles: UserRole[]): boolean { return Boolean(user && allowedRoles.includes(user.role)); }
