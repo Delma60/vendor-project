@@ -1,3 +1,5 @@
+'use client';
+
 // packages/ui/components/toast.tsx
 import { createContext, useContext, useState, type ReactNode } from 'react';
 export interface ToastMessage { id: string; title: string; message?: string; tone?: 'info' | 'success' | 'error'; }

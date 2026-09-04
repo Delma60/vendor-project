@@ -4,6 +4,7 @@
   "private": true,
   "main": "./components/index.ts",
   "types": "./components/index.ts",
+  "exports": { ".": { "types": "./components/index.ts", "default": "./components/index.ts" }, "./components": { "types": "./components/index.ts", "default": "./components/index.ts" }, "./styles/base.css": "./styles/base.css" },
   "dependencies": { "@foodconnect/shared-types": "*", "@foodconnect/shared-utils": "*", "react": "^19.0.0", "react-dom": "^19.0.0" },
   "scripts": { "typecheck": "tsc --noEmit" }
 }
