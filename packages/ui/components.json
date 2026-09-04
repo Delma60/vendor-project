@@ -1,0 +1,5 @@
+{
+  "style": "semantic-css",
+  "rsc": true,
+  "aliases": { "components": "@foodconnect/ui/components", "utils": "@foodconnect/shared-utils" }
+}

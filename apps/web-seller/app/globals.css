@@ -1,0 +1,18 @@
+/* apps/web-seller/app/globals.css */
+@import '../../../packages/ui/styles/base.css';
+@theme inline { --color-background: var(--color-background); --color-foreground: var(--color-foreground); }
+.btn { @apply inline-flex min-h-10 items-center justify-center rounded-xl border px-4 text-sm font-semibold transition-colors; }
+.btn-primary { @apply border-primary bg-primary text-primary-foreground; }
+.btn-secondary { @apply border-border bg-muted text-foreground; }
+.btn-ghost { @apply border-transparent bg-transparent text-foreground; }
+.btn-danger { @apply border-red-700 bg-red-700 text-white; }
+.card { @apply rounded-2xl border border-border bg-background p-5 shadow-sm; }
+.card-header { @apply mb-5; } .card-header h2 { @apply text-lg font-semibold; } .card-header p { @apply mt-1 text-sm text-muted-foreground; }
+.app-shell { @apply min-h-screen bg-muted; } .dashboard-layout { @apply mx-auto flex max-w-screen-2xl; } .sidebar { @apply min-h-screen w-64 shrink-0 border-r border-border bg-background p-6; }
+.sidebar-brand { @apply mb-8 block text-xl; } .sidebar nav { @apply grid gap-1; } .nav-item { @apply flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground; } .nav-item.is-active, .nav-item:hover { @apply bg-muted text-foreground; }
+.main-content { @apply min-w-0 flex-1 p-6; } .topbar { @apply mb-8 flex items-center justify-between gap-4; } .topbar h1 { @apply text-3xl font-semibold; } .eyebrow { @apply mb-1 text-xs font-bold uppercase tracking-widest text-primary; } .topbar-actions { @apply flex items-center gap-3; } .user-chip { @apply rounded-full bg-background px-3 py-2 text-sm; }
+.page-grid { @apply grid gap-5 md:grid-cols-2 xl:grid-cols-4; } .content-grid { @apply mt-5 grid gap-5 lg:grid-cols-2; } .stat-value { @apply mt-2 text-3xl font-semibold; } .muted { @apply text-sm text-muted-foreground; }
+.input { @apply min-h-10 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-primary; } .data-table { @apply grid gap-4; } table { @apply w-full border-collapse text-left text-sm; } th, td { @apply border-b border-border px-3 py-3; } .table-sort { @apply font-semibold; } .table-footer { @apply flex items-center justify-between text-sm text-muted-foreground; }
+.chart { @apply rounded-2xl border border-border bg-background p-5; } .chart-heading { @apply mb-5; } .chart-heading h2 { @apply font-semibold; } .chart-heading p { @apply text-sm text-muted-foreground; } .chart-body { @apply flex min-h-40 items-center justify-center rounded-xl bg-muted; } .chart-placeholder { @apply text-sm text-muted-foreground; }
+.toast-region { @apply fixed right-5 top-5 z-50 grid w-80 gap-3; } .toast { @apply rounded-xl border border-border bg-background p-4 shadow-lg; } .toast p { @apply mt-1 text-sm text-muted-foreground; } .loading-state { @apply grid min-h-screen place-items-center; }
+@media (max-width: 760px) { .sidebar { @apply w-16 p-3; } .sidebar-brand { @apply text-center text-sm; } .nav-item span { @apply sr-only; } .main-content { @apply p-4; } .topbar { @apply items-start; } }

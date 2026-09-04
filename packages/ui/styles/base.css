@@ -1,0 +1,17 @@
+/* packages/ui/styles/base.css */
+@import "tailwindcss";
+
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-muted: #f0f0f3;
+  --color-muted-foreground: #60646c;
+  --color-border: #e0e1e6;
+  --color-primary: #176b87;
+  --color-primary-foreground: #ffffff;
+  --radius-control: 0.75rem;
+  --font-display: Georgia, serif;
+  --font-body: Arial, sans-serif;
+}
+.dark { --color-background: #000000; --color-foreground: #ffffff; --color-muted: #212225; --color-muted-foreground: #b0b4ba; --color-border: #2e3135; }
+body { @apply bg-background text-foreground; font-family: var(--font-body); }

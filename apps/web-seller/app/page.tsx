@@ -1,0 +1,3 @@
+// apps/web-seller/app/page.tsx
+import { Card, Chart } from '@foodconnect/ui/components';
+export default function SellerOverviewPage() { return <><section className="page-grid">{[['Today\'s orders', '24'], ['Today\'s sales', 'NGN 184,500'], ['Rating', '4.8'], ['Next payout', 'Friday']].map(([label, value]) => <Card key={label}><p className="muted">{label}</p><p className="stat-value">{value}</p></Card>)}</section><div className="content-grid"><Chart title="Sales performance" description="Orders and revenue over the last 30 days" /><Card title="Today at a glance" description="Keep the kitchen moving"><p className="muted">8 orders are preparing and 3 are ready for pickup.</p></Card></div></>; }

@@ -1,0 +1,3 @@
+// apps/web-b2b/app/portal/page.tsx
+import { Card } from '@foodconnect/ui/components';
+export default function PortalOverviewPage() { return <><div className="content-grid">{[['This month', 'NGN 2.8m'], ['Pending approvals', '3'], ['Next delivery', 'Tomorrow']].map(([label, value]) => <Card key={label}><p className="muted">{label}</p><p className="stat-value">{value}</p></Card>)}</div><div className="content-grid"><Card title="Quick order"><p className="muted">Start from a saved template or build a new multi-location order.</p></Card><Card title="Account status"><p className="muted">Net-30 payment terms are approved for your company.</p></Card></div></>; }

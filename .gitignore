@@ -1,0 +1,9 @@
+# .gitignore
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store

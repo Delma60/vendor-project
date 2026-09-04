@@ -1,0 +1,10 @@
+// packages/ui/components/index.ts
+// shadcn-style convention: components stay composable and typed, use path aliases, and express variants through semantic class names.
+export * from './auth-guard';
+export * from './button';
+export * from './card';
+export * from './chart';
+export * from './data-table';
+export * from './sidebar';
+export * from './toast';
+export * from './topbar';

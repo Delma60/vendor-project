@@ -1,0 +1,3 @@
+// apps/web-admin/app/page.tsx
+import { Card, Chart } from '@foodconnect/ui/components';
+export default function AdminOverviewPage() { return <><section className="page-grid">{[['Gross merchandise value', 'NGN 12.4m'], ['Active sellers', '186'], ['Open disputes', '14'], ['B2B revenue split', '31%']].map(([label, value]) => <Card key={label}><p className="muted">{label}</p><p className="stat-value">{value}</p></Card>)}</section><div className="content-grid"><Chart title="Platform performance" description="GMV, active users, and retention overview" /><Card title="Needs attention"><p className="muted">12 seller applications and 4 flagged reviews are awaiting review.</p></Card></div></>; }
