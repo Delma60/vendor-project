@@ -15,6 +15,9 @@ export interface User {
   createdAt: string;
 }
 
+export interface BankAccountDetails { bankName: string; accountNumber: string; accountName: string; }
+export interface VerificationDocument { id: string; label: string; fileName: string; uploadedAt: string; }
+
 export interface Seller {
   id: string;
   ownerId: string;
@@ -26,6 +29,8 @@ export interface Seller {
   rating: number;
   totalOrders: number;
   isCookingToday: boolean;
+  bankDetails?: BankAccountDetails;
+  documents?: VerificationDocument[];
 }
 
 export interface MenuItem {
