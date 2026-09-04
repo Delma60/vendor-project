@@ -6,5 +6,7 @@ export * from './card';
 export * from './chart';
 export * from './data-table';
 export * from './sidebar';
+export * from './theme-script';
+export * from './theme-toggle';
 export * from './toast';
 export * from './topbar';

@@ -1,5 +1,5 @@
-import { AuthGuard, Sidebar, ToastProvider, Topbar } from '@foodconnect/ui/components';
+import { AuthGuard, Sidebar, ThemeToggle, ToastProvider, Topbar } from '@foodconnect/ui/components';
 
 const navigation = [{ label: 'Overview', href: '/' }, { label: 'Sellers', href: '/sellers' }, { label: 'Users', href: '/users' }, { label: 'Orders', href: '/orders' }, { label: 'Financials', href: '/financials' }, { label: 'Promotions', href: '/promotions' }, { label: 'Moderation', href: '/moderation' }, { label: 'Analytics', href: '/analytics' }, { label: 'Permissions', href: '/permissions' }];
 
-export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <ToastProvider><div className="app-shell"><div className="dashboard-layout"><Sidebar items={navigation} brand="FoodConnect Admin" /><div className="main-content"><Topbar title="Admin workspace" userName="Admin account" /><AuthGuard allowedRoles={['admin']}>{children}</AuthGuard></div></div></div></ToastProvider>; }
+export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <ToastProvider><div className="app-shell"><div className="dashboard-layout"><Sidebar items={navigation} brand="FoodConnect Admin" /><div className="main-content"><Topbar title="Admin workspace" userName="Admin account" actions={<ThemeToggle />} /><AuthGuard allowedRoles={['admin']}>{children}</AuthGuard></div></div></div></ToastProvider>; }
