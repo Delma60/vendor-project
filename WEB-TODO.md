@@ -3,7 +3,6 @@
 > Covers the three web surfaces: **Seller Dashboard**, **Admin Dashboard**, and **B2B Portal**. All three live in the Next.js side of the monorepo (`/apps/web-seller`, `/apps/web-admin`, `/apps/web-b2b`) and share the `shared-types`, `shared-utils`, and `ui` packages defined in the main project TODO.
 
 **Decision carried over from main plan:** if you choose to merge the seller experience into the mobile app instead of building a web dashboard, skip Section 2 and only build Admin + B2B on web. Flag which way you're going before Phase 1 below starts.
-
 ---
 
 ## 0. Shared Web Foundations (build once, used by all 3 apps)
