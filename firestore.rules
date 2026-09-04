@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+    function role() { return request.auth.token.role; }
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || role() == 'admin');
+      allow write: if role() == 'admin';
+    }
+    match /sellers/{sellerId} {
+      allow read: if true;
+      allow write: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == resource.data.ownerId));
+    }
+    match /orders/{orderId} {
+      allow read: if isSignedIn() && (role() == 'admin' || request.auth.uid == resource.data.buyerId || role() == 'seller');
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (role() == 'admin' || role() == 'seller');
+    }
+    match /companies/{companyId} {
+      allow read, write: if isSignedIn() && (role() == 'admin' || role() == 'b2b_member' || role() == 'b2b_approver');
+    }
+  }
+}

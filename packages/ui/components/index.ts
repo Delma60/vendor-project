@@ -1,5 +1,6 @@
 // shadcn-style convention: components stay composable and typed, use path aliases, and express variants through semantic class names.
 export * from './auth-guard';
+export * from './alert';
 export * from './button';
 export * from './card';
 export * from './chart';

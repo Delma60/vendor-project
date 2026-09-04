@@ -27,7 +27,7 @@ export function useApiQuery<T>(path: string | null): { data: T | null; error: Er
   return state;
 }
 
-async function fetchUserProfile(uid: string): Promise<User | null> {
+export async function getUserProfile(uid: string): Promise<User | null> {
   const snapshot = await getDoc(doc(db, 'users', uid));
   return snapshot.exists() ? snapshot.data() as User : null;
 }
@@ -37,7 +37,7 @@ export function useCurrentUser(): { user: User | null; loading: boolean } {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async firebaseUser => {
       if (!firebaseUser) { setState({ user: null, loading: false }); return; }
-      const profile = await fetchUserProfile(firebaseUser.uid);
+      const profile = await getUserProfile(firebaseUser.uid);
       setState({ user: profile, loading: false });
     });
     return unsubscribe;

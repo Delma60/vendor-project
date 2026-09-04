@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    "types": ["node"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "baseUrl": ".",
