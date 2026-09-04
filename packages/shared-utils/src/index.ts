@@ -1,10 +1,10 @@
 // packages/shared-utils/src/index.ts
 
-import type { User, UserRole } from '@foodconnect/shared-types';
+import type { AccountStatus, Seller, User, UserRole } from '@foodconnect/shared-types';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@foodconnect/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export interface ApiClient { request<T>(path: string, init?: RequestInit): Promise<T>; }
 export const apiClient: ApiClient = {
@@ -30,6 +30,14 @@ export function useApiQuery<T>(path: string | null): { data: T | null; error: Er
 export async function getUserProfile(uid: string): Promise<User | null> {
   const snapshot = await getDoc(doc(db, 'users', uid));
   return snapshot.exists() ? snapshot.data() as User : null;
+}
+
+export async function updateUserStatus(uid: string, status: AccountStatus): Promise<void> {
+  await setDoc(doc(db, 'users', uid), { status }, { merge: true });
+}
+
+export async function createSellerProfile(seller: Seller): Promise<void> {
+  await setDoc(doc(db, 'sellers', seller.id), seller);
 }
 
 export function useCurrentUser(): { user: User | null; loading: boolean } {

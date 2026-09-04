@@ -1,5 +1,5 @@
 import { AuthGuard, Sidebar, ThemeToggle, ToastProvider, Topbar } from '@foodconnect/ui/components';
 
-const navigation = [{ label: 'Overview', href: '/' }, { label: 'Onboarding', href: '/onboarding' }, { label: 'Menu', href: '/menu' }, { label: 'Orders', href: '/orders' }, { label: 'Earnings', href: '/earnings' }, { label: 'Reviews', href: '/reviews' }, { label: 'Growth', href: '/gamification' }, { label: 'B2B queue', href: '/b2b-orders' }];
+const navigation = [{ label: 'Overview', href: '/' }, { label: 'Menu', href: '/menu' }, { label: 'Orders', href: '/orders' }, { label: 'Earnings', href: '/earnings' }, { label: 'Reviews', href: '/reviews' }, { label: 'Growth', href: '/gamification' }, { label: 'B2B queue', href: '/b2b-orders' }];
 
 export default function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <ToastProvider><div className="app-shell"><div className="dashboard-layout"><Sidebar items={navigation} /><div className="main-content"><Topbar title="Seller dashboard" userName="Seller account" actions={<ThemeToggle />} /><AuthGuard allowedRoles={['seller']}>{children}</AuthGuard></div></div></div></ToastProvider>; }

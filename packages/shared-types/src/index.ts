@@ -1,7 +1,7 @@
 // packages/shared-types/src/index.ts
 
 export type UserRole = 'customer' | 'seller' | 'admin' | 'b2b_member' | 'b2b_approver';
-export type AccountStatus = 'active' | 'pending' | 'suspended' | 'banned';
+export type AccountStatus = 'incomplete' | 'active' | 'pending' | 'suspended' | 'banned';
 export type OrderStatus = 'placed' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'delivered' | 'cancelled';
 export type PaymentTerms = 'prepay' | 'net_30';
 export type Currency = 'NGN' | 'USD';
@@ -23,6 +23,7 @@ export interface Seller {
   ownerId: string;
   businessName: string;
   category: string;
+  description?: string;
   address: string;
   operatingHours: Record<string, { opensAt: string; closesAt: string; closed: boolean }>;
   verificationStatus: 'pending' | 'approved' | 'rejected';

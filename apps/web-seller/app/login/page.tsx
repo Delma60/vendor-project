@@ -26,6 +26,7 @@ export default function LoginPage() {
 		if (userLoading || !user || user.role !== 'seller') return;
 		if (user.status === 'active') router.replace('/');
 		if (user.status === 'pending') router.replace('/pending-approval');
+		if (user.status === 'incomplete') router.replace('/onboarding');
 	}, [router, user, userLoading]);
 
 	async function handleSubmit(event: FormEvent) {
@@ -47,6 +48,10 @@ export default function LoginPage() {
 			}
 			if (profile.status === 'pending') {
 				router.push('/pending-approval');
+				return;
+			}
+			if (profile.status === 'incomplete') {
+				router.push('/onboarding');
 				return;
 			}
 			router.push('/');
@@ -75,7 +80,8 @@ export default function LoginPage() {
 				<Button type="submit" disabled={submitting} className="auth-submit">
 					{submitting ? 'Signing in…' : 'Sign in'}
 				</Button>
-				<Link className="auth-secondary-link" href="/forgot-password">Forgt password?</Link>
+				<Link className="auth-secondary-link" href="/forgot-password">Forgot password?</Link>
+				<p className="muted">New here? <Link href="/signup">Create a seller account</Link></p>
 			</form>
 		</AuthLayout>
 	);

@@ -43,3 +43,8 @@
 .password-input { @apply relative; }
 .password-input input { @apply pr-10; }
 .password-input-toggle { @apply absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-base text-muted-foreground transition-colors hover:bg-muted; }
+.checkbox { @apply flex items-start gap-2 text-sm text-muted-foreground; } .checkbox-input { @apply mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary; } .checkbox-label { @apply leading-snug; }
+.onboarding-shell { @apply mx-auto max-w-3xl px-6 py-10; } .onboarding-shell-body { @apply mt-6; }
+.checkbox-field { @apply flex items-start gap-2 text-sm text-muted-foreground; } .checkbox-field input { @apply mt-1; }
+.onboarding-page-shell { @apply flex min-h-screen justify-center bg-muted p-6; } .onboarding-page-shell-inner { @apply w-full max-w-3xl py-10; }
+.onboarding-header { @apply mb-6 flex items-center justify-between; } .onboarding-header strong { @apply text-xl; }

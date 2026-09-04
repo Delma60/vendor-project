@@ -5,6 +5,7 @@ export * from './alert';
 export * from './button';
 export * from './card';
 export * from './chart';
+export * from './checkbox';
 export * from './data-table';
 export * from './field';
 export * from './file-upload';
