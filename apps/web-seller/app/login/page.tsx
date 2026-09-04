@@ -2,7 +2,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Alert, Button, Card, Field, Input } from '@foodconnect/ui/components';
+import { Alert, AuthLayout, Button, Field, Input, PasswordInput } from '@foodconnect/ui/components';
 import { signInWithEmail, signOutUser } from '@foodconnect/firebase';
 import { getUserProfile, useCurrentUser } from '@foodconnect/shared-utils';
 
@@ -55,5 +55,28 @@ export default function LoginPage() {
 		finally { setSubmitting(false); }
 	}
 
-	return <main className="loading-state"><Card title="Seller sign in" description="Use your FoodConnect seller account to continue."><form className="auth-form" onSubmit={handleSubmit}><Field label="Email" htmlFor="email"><Input id="email" type="email" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} required /></Field><Field label="Password" htmlFor="password"><Input id="password" type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required /></Field>{error && <Alert tone="error">{error}</Alert>}<div className="topbar-actions"><Button type="submit" disabled={submitting}>{submitting ? 'Signing in...' : 'Sign in'}</Button><Link className="btn btn-ghost" href="/forgot-password">Forgot password?</Link></div></form></Card></main>;
+	return (
+		<AuthLayout
+			eyebrow="Seller workspace"
+			title="Welcome back"
+			description="Sign in to manage your kitchen, menu, and orders."
+			brand="FoodConnect"
+			tagline="Everything your kitchen needs, in one place."
+			highlights={['Track live orders in real time', 'Manage payouts and earnings clearly', 'Grow with badges and visibility boosts']}
+		>
+			<form className="auth-form bg-red-600" onSubmit={handleSubmit} noValidate>
+				<Field label="Email" htmlFor="email">
+					<Input id="email" type="email" autoComplete="email" placeholder="you@business.com" value={email} onChange={event => setEmail(event.target.value)} required />
+				</Field>
+				<Field label="Password" htmlFor="password">
+					<PasswordInput id="password" autoComplete="current-password" placeholder="Enter your password" value={password} onChange={event => setPassword(event.target.value)} required />
+				</Field>
+				{error && <Alert tone="error">{error}</Alert>}
+				<Button type="submit" disabled={submitting} className="auth-submit">
+					{submitting ? 'Signing in…' : 'Sign in'}
+				</Button>
+				<Link className="auth-secondary-link" href="/forgot-password">Forgt password?</Link>
+			</form>
+		</AuthLayout>
+	);
 }

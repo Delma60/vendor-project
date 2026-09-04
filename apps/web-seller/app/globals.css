@@ -25,3 +25,21 @@
 .onboarding-step { @apply mt-6; } .onboarding-actions { @apply mt-8 flex items-center justify-between border-t border-border pt-6; } .review-grid { @apply grid gap-4 md:grid-cols-3; } .pending-approval { @apply flex flex-col items-center gap-3 py-10 text-center; } .pending-approval-icon { @apply text-4xl; }
 .auth-form { @apply grid w-full max-w-sm gap-4; }
 .alert { @apply rounded-xl border p-4 text-sm; } .alert-title { @apply block font-semibold; } .alert-message { @apply mt-1 text-current/80; } .alert-info { @apply border-border bg-muted text-foreground; } .alert-success { @apply border-green-600/30 bg-green-600/10 text-green-700; } .alert-error { @apply border-red-600/30 bg-red-600/10 text-red-700; } .alert-warning { @apply border-amber-500/30 bg-amber-500/10 text-amber-700; }
+.auth-shell { @apply grid min-h-screen md:grid-cols-2; }
+.auth-panel-brand { @apply hidden bg-primary p-12 text-primary-foreground md:block; background-image: linear-gradient(160deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 70%, black) 100%); }
+.auth-panel-brand-content { @apply max-w-sm; }
+.auth-brand-mark { @apply text-2xl font-bold; }
+.auth-tagline { @apply mt-4 text-lg text-primary-foreground/90; }
+.auth-highlights { @apply mt-8 grid gap-3 text-sm text-primary-foreground/80; }
+.auth-highlights li { @apply flex items-center gap-2; }
+.auth-highlights li::before { content: '>'; @apply flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-foreground/15 text-xs; }
+.auth-panel-form { @apply flex justify-center bg-background p-6 md:p-12; }
+.auth-panel-form-content { @apply w-full max-w-sm pt-1; }
+.auth-title { @apply mt-2 text-3xl font-semibold; }
+.auth-description { @apply mt-2 text-sm text-muted-foreground; }
+.auth-panel-form-content .auth-form { @apply mt-8 max-w-none; }
+.auth-submit { @apply w-full; }
+.auth-secondary-link { @apply block text-center text-sm text-muted-foreground transition-colors hover:text-foreground; }
+.password-input { @apply relative; }
+.password-input input { @apply pr-10; }
+.password-input-toggle { @apply absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-base text-muted-foreground transition-colors hover:bg-muted; }

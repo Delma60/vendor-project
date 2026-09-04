@@ -1,6 +1,19 @@
 /* packages/ui/styles/base.css */
 @import "tailwindcss";
 
+@source "../components/**/*.{ts,tsx}";
+@source "../../../apps/**/*.{ts,tsx}";
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+}
+
 :root {
   --color-background: #ffffff;
   --color-foreground: #000000;
