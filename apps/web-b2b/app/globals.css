@@ -11,3 +11,4 @@
 @media (max-width: 760px) { .sidebar { @apply w-16 p-3; } .sidebar-brand { @apply text-sm; } .nav-item span { @apply sr-only; } .main-content, .public-content { @apply p-4; } .hero h1 { @apply text-4xl; } }
 .auth-form { @apply grid w-full max-w-sm gap-4; }
 .alert { @apply rounded-xl border p-4 text-sm; } .alert-title { @apply block font-semibold; } .alert-message { @apply mt-1 text-current/80; } .alert-info { @apply border-border bg-muted text-foreground; } .alert-success { @apply border-green-600/30 bg-green-600/10 text-green-700; } .alert-error { @apply border-red-600/30 bg-red-600/10 text-red-700; } .alert-warning { @apply border-amber-500/30 bg-amber-500/10 text-amber-700; }
+.error-state { @apply mx-auto grid max-w-md justify-items-center gap-3 py-16 text-center; } .error-state-icon { @apply text-4xl font-bold text-red-600; } .error-state h2 { @apply text-xl font-semibold; } .error-state-actions { @apply mt-2 flex items-center gap-3; }

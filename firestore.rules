@@ -1,28 +1,75 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isSignedIn() { return request.auth != null; }
-    function role() { return request.auth.token.role; }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function currentUser() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function hasRole(expectedRole) {
+      return isSignedIn() && currentUser().role == expectedRole;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
     match /users/{userId} {
-      allow read: if isSignedIn() && (request.auth.uid == userId || role() == 'admin');
-      allow write: if role() == 'admin';
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId)
+        && request.resource.data.id == userId
+        && request.resource.data.role in ['customer', 'seller', 'b2b_member', 'b2b_approver']
+        && request.resource.data.status in ['incomplete', 'pending'];
+      allow update: if isAdmin()
+        || (
+          isOwner(userId)
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.status in ['incomplete', 'pending', 'active']
+        );
+      allow delete: if isAdmin();
     }
+
     match /sellers/{sellerId} {
-      allow read: if true;
-      allow write: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == resource.data.ownerId));
+      allow read: if resource.data.verificationStatus == 'approved' || isOwner(sellerId) || isAdmin();
+      allow create: if isOwner(sellerId) && request.resource.data.ownerId == sellerId;
+      allow update: if isAdmin() || (isOwner(sellerId) && request.resource.data.ownerId == resource.data.ownerId);
+      allow delete: if isAdmin();
     }
+
     match /menuItems/{itemId} {
-      allow read: if resource.data.available == true || (isSignedIn() && (role() == 'admin' || request.auth.uid == resource.data.sellerId));
-      allow create: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == request.resource.data.sellerId));
-      allow update, delete: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == resource.data.sellerId));
+      allow read: if resource.data.available == true
+        || isAdmin()
+        || (isSignedIn() && resource.data.sellerId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.sellerId == request.auth.uid;
+      allow update, delete: if isAdmin() || (isSignedIn() && resource.data.sellerId == request.auth.uid);
     }
+
     match /orders/{orderId} {
-      allow read: if isSignedIn() && (role() == 'admin' || request.auth.uid == resource.data.buyerId || role() == 'seller');
-      allow create: if isSignedIn();
-      allow update: if isSignedIn() && (role() == 'admin' || role() == 'seller');
+      allow read: if isAdmin()
+        || (isSignedIn() && resource.data.buyerId == request.auth.uid)
+        || (isSignedIn() && resource.data.sellerId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.buyerId == request.auth.uid;
+      allow update: if isAdmin()
+        || (isSignedIn() && resource.data.sellerId == request.auth.uid)
+        || (isSignedIn() && resource.data.buyerId == request.auth.uid);
+      allow delete: if isAdmin();
     }
-    match /companies/{companyId} {
-      allow read, write: if isSignedIn() && (role() == 'admin' || role() == 'b2b_member' || role() == 'b2b_approver');
+
+    match /b2bCompanies/{companyId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

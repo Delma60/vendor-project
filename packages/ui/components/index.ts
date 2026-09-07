@@ -10,6 +10,8 @@ export * from './data-table';
 export * from './field';
 export * from './file-upload';
 export * from './dialog';
+export * from './error-boundary';
+export * from './error-state';
 export * from './image-cropper';
 export * from './input';
 export * from './label';
