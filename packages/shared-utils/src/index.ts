@@ -1,10 +1,10 @@
 // packages/shared-utils/src/index.ts
 
-import type { AccountStatus, BankAccountDetails, Seller, User, UserRole, VerificationDocument } from '@foodconnect/shared-types';
+import type { AccountStatus, BankAccountDetails, Currency, MenuItem, Seller, User, UserRole, VerificationDocument } from '@foodconnect/shared-types';
 import { useEffect, useState } from 'react';
 import { auth, db, uploadFile } from '@foodconnect/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 export interface ApiClient { request<T>(path: string, init?: RequestInit): Promise<T>; }
 export const apiClient: ApiClient = {
@@ -96,3 +96,65 @@ export function useCurrentUser(): { user: User | null; loading: boolean } {
 export function hasRole(user: User | null, allowedRoles: UserRole[]): boolean { return Boolean(user && allowedRoles.includes(user.role)); }
 export function canAccessRoute(user: User | null, allowedRoles: UserRole[]): boolean { return hasRole(user, allowedRoles) && user?.status === 'active'; }
 export function requireRole(user: User | null, allowedRoles: UserRole[]): void { if (!canAccessRoute(user, allowedRoles)) throw new Error('You do not have permission to access this route.'); }
+
+export function useSellerProfile(sellerId: string | null): { seller: Seller | null; loading: boolean } {
+  const [state, setState] = useState<{ seller: Seller | null; loading: boolean }>({ seller: null, loading: Boolean(sellerId) });
+  useEffect(() => {
+    if (!sellerId) { setState({ seller: null, loading: false }); return; }
+    setState(current => ({ ...current, loading: true }));
+    return onSnapshot(doc(db, 'sellers', sellerId), snapshot => {
+      setState({ seller: snapshot.exists() ? snapshot.data() as Seller : null, loading: false });
+    }, () => setState({ seller: null, loading: false }));
+  }, [sellerId]);
+  return state;
+}
+
+export async function setSellerCookingToday(sellerId: string, isCookingToday: boolean): Promise<void> {
+  await updateDoc(doc(db, 'sellers', sellerId), { isCookingToday });
+}
+
+export async function updateSellerOperatingHours(sellerId: string, operatingHours: Seller['operatingHours']): Promise<void> {
+  await updateDoc(doc(db, 'sellers', sellerId), { operatingHours });
+}
+
+export interface MenuItemInput {
+  name: string;
+  description: string;
+  category: string;
+  price: number;
+  currency: Currency;
+  bulkCapable: boolean;
+  photoFile?: File | null;
+}
+
+export function useMenuItems(sellerId: string | null): { items: MenuItem[]; loading: boolean; error: Error | null } {
+  const [state, setState] = useState<{ items: MenuItem[]; loading: boolean; error: Error | null }>({ items: [], loading: Boolean(sellerId), error: null });
+  useEffect(() => {
+    if (!sellerId) { setState({ items: [], loading: false, error: null }); return; }
+    setState(current => ({ ...current, loading: true }));
+    const menuQuery = query(collection(db, 'menuItems'), where('sellerId', '==', sellerId), orderBy('createdAt', 'desc'));
+    return onSnapshot(menuQuery, snapshot => {
+      setState({ items: snapshot.docs.map(item => item.data() as MenuItem), loading: false, error: null });
+    }, error => setState({ items: [], loading: false, error }));
+  }, [sellerId]);
+  return state;
+}
+
+export async function saveMenuItem(sellerId: string, input: MenuItemInput, existingItem?: MenuItem): Promise<void> {
+  const id = existingItem?.id ?? crypto.randomUUID();
+  let photoUrl = existingItem?.photoUrl;
+  if (input.photoFile) photoUrl = await uploadFile(`sellers/${sellerId}/menu/${id}-${input.photoFile.name}`, input.photoFile);
+  await setDoc(doc(db, 'menuItems', id), {
+    id, sellerId, name: input.name, description: input.description, category: input.category,
+    price: input.price, currency: input.currency, photoUrl, available: existingItem?.available ?? true,
+    bulkCapable: input.bulkCapable, createdAt: existingItem?.createdAt ?? new Date().toISOString(), updatedAt: new Date().toISOString(),
+  } satisfies MenuItem);
+}
+
+export async function setMenuItemAvailability(itemId: string, available: boolean): Promise<void> {
+  await updateDoc(doc(db, 'menuItems', itemId), { available });
+}
+
+export async function deleteMenuItem(itemId: string): Promise<void> {
+  await deleteDoc(doc(db, 'menuItems', itemId));
+}

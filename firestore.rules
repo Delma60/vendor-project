@@ -11,6 +11,11 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == resource.data.ownerId));
     }
+    match /menuItems/{itemId} {
+      allow read: if resource.data.available == true || (isSignedIn() && (role() == 'admin' || request.auth.uid == resource.data.sellerId));
+      allow create: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == request.resource.data.sellerId));
+      allow update, delete: if isSignedIn() && (role() == 'admin' || (role() == 'seller' && request.auth.uid == resource.data.sellerId));
+    }
     match /orders/{orderId} {
       allow read: if isSignedIn() && (role() == 'admin' || request.auth.uid == resource.data.buyerId || role() == 'seller');
       allow create: if isSignedIn();

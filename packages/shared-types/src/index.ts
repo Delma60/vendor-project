@@ -46,6 +46,8 @@ export interface MenuItem {
   photoUrl?: string;
   available: boolean;
   bulkCapable: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface OrderItem {
