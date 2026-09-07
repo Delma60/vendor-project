@@ -33,7 +33,7 @@ export default function RegisterPage() {
 		setSubmitting(true);
 		try {
 			const credential = await signUpWithEmail(email, password, fullName);
-			await createUserProfile({ uid: credential.user.uid, email, displayName: fullName, role: 'seller', status: 'pending' });
+			await createUserProfile({ uid: credential.user.uid, email, displayName: fullName, role: 'seller', status: 'incomplete' });
 			router.push('/onboarding');
 		} catch (err) { setError(mapSignUpError(err)); } finally { setSubmitting(false); }
 	}

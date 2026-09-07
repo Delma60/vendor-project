@@ -1,10 +1,10 @@
 // packages/shared-utils/src/index.ts
 
-import type { AccountStatus, Seller, User, UserRole } from '@foodconnect/shared-types';
+import type { AccountStatus, BankAccountDetails, Seller, User, UserRole, VerificationDocument } from '@foodconnect/shared-types';
 import { useEffect, useState } from 'react';
-import { auth, db } from '@foodconnect/firebase';
+import { auth, db, uploadFile } from '@foodconnect/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export interface ApiClient { request<T>(path: string, init?: RequestInit): Promise<T>; }
 export const apiClient: ApiClient = {
@@ -38,6 +38,46 @@ export async function updateUserStatus(uid: string, status: AccountStatus): Prom
 
 export async function createSellerProfile(seller: Seller): Promise<void> {
   await setDoc(doc(db, 'sellers', seller.id), seller);
+}
+
+export interface SellerApplicationInput {
+  businessName: string;
+  category: string;
+  description: string;
+  address: string;
+  city: string;
+  operatingHours: Seller['operatingHours'];
+  bankDetails: BankAccountDetails;
+  documents: { label: string; file: File }[];
+}
+
+export async function submitSellerApplication(uid: string, input: SellerApplicationInput): Promise<void> {
+  const uploadedDocuments: VerificationDocument[] = await Promise.all(
+    input.documents.map(async ({ label, file }) => {
+      const fileUrl = await uploadFile(`sellers/${uid}/documents/${label.replace(/\s+/g, '-').toLowerCase()}-${file.name}`, file);
+      return { id: crypto.randomUUID(), label, fileName: file.name, uploadedAt: new Date().toISOString(), fileUrl };
+    })
+  );
+
+  const seller: Seller = {
+    id: uid,
+    ownerId: uid,
+    businessName: input.businessName,
+    category: input.category,
+    description: input.description,
+    address: `${input.address}${input.city ? `, ${input.city}` : ''}`,
+    operatingHours: input.operatingHours,
+    bankDetails: input.bankDetails,
+    documents: uploadedDocuments,
+    verificationStatus: 'pending',
+    rating: 0,
+    totalOrders: 0,
+    isCookingToday: false,
+    createdAt: new Date().toISOString(),
+  };
+
+  await setDoc(doc(db, 'sellers', uid), seller);
+  await updateDoc(doc(db, 'users', uid), { status: 'pending' });
 }
 
 export function useCurrentUser(): { user: User | null; loading: boolean } {
